@@ -1,0 +1,138 @@
+// This file is the descriptor for the Custom code recipe solve-knapsack
+{
+    // Meta data for display purposes
+    "meta": {
+        // label: name of the recipe as displayed, should be short
+        "label": "Solve Knapsack Problem",
+        // description: longer string to help end users understand what this recipe does
+        "description": "Solves the knapsack problem, selecting a basket of items from a set of items with associated weights (costs) and values. Generates the top N solutions for each problem group.",
+        // icon: must be one of the FontAwesome 3.2.1 icons, complete list here at https://fontawesome.com/v3.2.1/icons/
+        "icon": "icon-briefcase"
+    },
+
+    "kind": "PYTHON",
+    "selectableFromDataset": "input_dataset",
+    
+
+    // Inputs and outputs are defined by roles. In the recipe's I/O tab, the user can associate one
+    // or more dataset to each input and output role.
+
+    // The "arity" field indicates whether the user can associate several datasets to the role ('NARY')
+    // or at most one ('UNARY'). The "required" field indicates whether the user is allowed to
+    // associate no dataset with the role.
+
+    "inputRoles": [
+        {
+            "name": "input_dataset",
+            "label": "Input Dataset",
+            "description": "Dataset containing data for optimization.",
+            "arity": "UNARY",
+            "required": true,
+            "acceptsDataset": true
+        }
+    ],
+
+    "outputRoles": [
+        {
+            "name": "output_dataset",
+            "label": "Output Dataset",
+            "description": "Dataset where optimal baskets will be published.",
+            "arity": "UNARY",
+            "required": true,
+            "acceptsDataset": true
+        }
+    ],
+
+    /* The field "params" holds a list of all the params
+       for wich the user will be prompted for values in the Settings tab of the recipe.
+
+       The available parameter types include:
+       STRING, STRINGS, INT, DOUBLE, BOOLEAN, SELECT, MULTISELECT, MAP, TEXTAREA, PRESET, COLUMN, COLUMNS
+
+       For the full list and for more details, see the documentation: https://doc.dataiku.com/dss/latest/plugins/reference/params.html
+    */
+
+    "params": [
+        {
+            "name": "agg_col",
+            "label": "Problem Group",
+            "description": "(OPTIONAL) Column from input dataset whose values represent individual optimization problems. For example, a date column if you wish to solve knapsack for multiple dates separately. Leave blank if whole dataset is one optimization problem.",
+            "type": "COLUMN",
+            "columnRole": "input_dataset",
+            "mandatory": false
+        },
+        
+        {
+            "name": "label_col",
+            "label": "Label Column",
+            "description": "Column from input dataset to identify items to select from. Can be an ID column or unique names of individuals/objects.",
+            "type": "COLUMN",
+            "columnRole": "input_dataset",
+            "mandatory": true
+        },
+        
+        {
+            "name": "cost_col",
+            "label": "Cost Column",
+            "description": "Column from input dataset whose values represent the cost/weight of each item. For example, in a sports context this could be the salary of players.",
+            "type": "COLUMN",
+            "columnRole": "input_dataset",
+            "mandatory": true
+        },
+        
+        {
+            "name": "value_col",
+            "label": "Value Column",
+            "description": "Column from input dataset whose values represent the value/production of each item. For example, in a sports context this could be the number of points players will (or are predicted to) score.",
+            "type": "COLUMN",
+            "columnRole": "input_dataset",
+            "mandatory": true
+        },
+        
+        {
+            "name": "actual_col",
+            "label": "Actual Column",
+            "description": "(OPTIONAL) Column from input dataset whose values represent the actual realized value after the fact. This can be used as a basis for comparison to evaluate the performance of optimization.",
+            "type": "COLUMN",
+            "columnRole": "input_dataset",
+            "mandatory": false
+        },
+        
+        {
+            "name": "cap",
+            "label": "Salary/Cost Cap",
+            "description": "Value representing constraint on salary/cost of items to select.",
+            "type": "DOUBLE",
+            "columnRole": "input_dataset",
+            "mandatory": true
+        },
+        
+        {
+            "name": "top_n",
+            "label": "Top N",
+            "description": "(OPTIONAL) Integer representing the best 'N' baskets to output. Default Value: 1.",
+            "type": "INT",
+            "columnRole": "input_dataset",
+            "mandatory": false,
+            "defaultValue": 1
+        },
+        
+        {
+            "name": "selection_n",
+            "label": "Selection Quantity",
+            "description": "Integer representing how many items must be selected in each basket.",
+            "type": "INT",
+            "columnRole": "input_dataset",
+            "mandatory": true
+        }
+    ],
+
+    // The field "resourceKeys" holds a list of keys that allows to limit the number
+    // of concurrent executions and activities triggered by this recipe.
+    //
+    // Administrators can configure the limit per resource key in the Administration > Settings > Flow build
+    // screen.
+
+    "resourceKeys": []
+
+}
